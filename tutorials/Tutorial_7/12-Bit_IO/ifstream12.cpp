@@ -81,7 +81,7 @@ ifstream12& ifstream12::operator>>(size_t& aValue)
 
 	for (size_t i = 0; i < 12; i++)
 	{
-		aValue |= (readBit() << i);
+		aValue |= readBit() << i;
 	}
 
 	return *this;
