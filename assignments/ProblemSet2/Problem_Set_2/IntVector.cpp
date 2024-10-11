@@ -43,9 +43,9 @@ void IntVector::swap(size_t aSourceIndex, size_t aTargetIndex)
 		throw std::out_of_range("Illegal vector indices!!");
 	}
 
-	int lSourceElement = fElements[aSourceIndex];
+	int lTemp = fElements[aSourceIndex];
 	fElements[aSourceIndex] = fElements[aTargetIndex];
-	fElements[aTargetIndex] = lSourceElement;
+	fElements[aTargetIndex] = lTemp;
 }
 
 const int IntVector::operator[](size_t aIndex) const
