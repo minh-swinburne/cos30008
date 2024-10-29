@@ -15,22 +15,45 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="iVigenereStream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vigenere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VigenereForwardIterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="sample_3.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sample_4.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FibonacciSequence.cpp">
+    <ClCompile Include="Vigenere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FibonacciSequenceIterator.cpp">
+    <ClCompile Include="KeyProvider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="FibonacciSequence.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FibonacciSequenceIterator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="iVigenereStream.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VigenereForwardIterator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VigenereMT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

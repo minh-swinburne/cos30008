@@ -18,6 +18,7 @@ void SortableIntVector::sort(Comparable aOrderFunction)
 		for (size_t j = 0; j < lSize - 1 - i; j++)	// inner loop
 		{
 			// compares adjacent elements and swaps if the former has bigger value
+			// doesn't swap if the elements are equal
 			if (!aOrderFunction((*this)[j], (*this)[j + 1]))
 			{
 				swap(j, j + 1);

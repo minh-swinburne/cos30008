@@ -29,7 +29,7 @@ size_t IntVector::size() const
 
 const int IntVector::get(size_t aIndex) const
 {
-	// reuse operator[] to checks index
+	// reuse operator[] to check index
 	return (*this)[aIndex];	
 }
 
