@@ -1,5 +1,5 @@
 
-// COS30008, Problem Set 4, Problem 2, 2022
+// COS30008, Problem Set 4, Problem 2, 2025
 
 #pragma once
 
@@ -22,16 +22,62 @@ private:
     BTreeNode fRoot;
     
 public:
+	// default constructor
+    BinarySearchTree() :
+		fRoot(&BNode::NIL)
+	{ }
 
-    BinarySearchTree();
+	// destructor
+    ~BinarySearchTree()
+	{
+		// avoid deleting NIL
+		if (!empty())
+        {
+            delete fRoot;
+        }
+	}
 
-    ~BinarySearchTree();
+    bool empty() const
+    {
+		return fRoot->empty();
+    }
 
-    bool empty() const;
-    size_t height() const;
+    size_t height() const
+    {
+		if (empty())
+		{
+			throw std::domain_error("Empty tree has no height.");
+		}
+
+		return fRoot->height();
+    }
     
-    bool insert( const T& aKey );
-    bool remove( const T& aKey );
+    bool insert(const T& aKey)
+    {
+		// If tree is empty, create a new root
+		if (empty())
+		{
+			fRoot = new BNode(aKey);
+			return true;
+		}
+
+		// else, insert into the tree
+		return fRoot->insert(aKey);
+    }
+
+    bool remove(const T& aKey)
+    {
+		// If removing root and root is the only node in the tree
+        // delete it and set the root to NIL
+        if (aKey == fRoot->key && fRoot->leaf())
+        {
+            delete fRoot;
+            fRoot = &BNode::NIL;
+			return true;
+        }
+
+		return fRoot->remove(aKey, &BNode::NIL);
+    }
 
 	// Problem 3 methods
     
@@ -40,6 +86,13 @@ public:
     // Allow iterator to access private member variables
     friend class BinarySearchTreeIterator<T>;
 
-    Iterator begin() const;
-    Iterator end() const;
+    Iterator begin() const
+    {
+		return Iterator(*this);
+    }
+
+    Iterator end() const
+    {
+        return Iterator(*this).end();
+    }
 };
