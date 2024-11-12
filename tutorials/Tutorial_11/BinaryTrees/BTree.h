@@ -6,6 +6,8 @@
 #include <stdexcept>
 #include <algorithm>
 
+using namespace std;
+
 template<typename T>
 class BTree
 {
@@ -13,42 +15,200 @@ private:
     T fKey;                                         // T() for empty BTree
     BTree<T>* fLeft;
     BTree<T>* fRight;
-    
-    BTree();                                        // sentinel constructor
+
+    // sentinel constructor
+    BTree() :
+		fKey(T()),
+		fLeft(&NIL),
+		fRight(&NIL)
+    { }
 
     // tree manipulator auxiliaries
-    void attach( BTree<T>** aNode, const BTree<T>& aBTree );
-    const BTree<T>& aBTree detach( BTree<T>** aNode );
+    void attach(BTree<T>** aNode, const BTree<T>& aBTree)
+    {
+        if (empty())
+        {
+			throw domain_error("BTree::attach(): empty tree");
+        }
+
+		if (*aNode != &NIL)
+		{
+			throw domain_error("BTree::attach(): non-NIL target");
+		}
+
+		*aNode = const_cast<BTree<T> *>(& aBTree);
+	}
+
+    const BTree<T>& detach(BTree<T>** aNode)
+    {
+        if (empty())
+        {
+            throw domain_error("BTree::detach(): empty tree");
+        }
+
+		if (*aNode == &NIL)
+		{
+			throw domain_error("BTree::detach(): empty target");
+		}
+
+		const BTree<T>& result = **aNode;
+		*aNode = &NIL;
+
+		return result;
+	}
 
 public:
-    static BTree<T> NIL;                          	// Empty BTree
-    
-    BTree( const T& aKey );                         // BTree leaf
-    BTree( T&& aKey );                              // BTree leaf
+    // Empty BTree
+    static BTree<T> NIL;
 
-    BTree( const BTree& aOtherBTree );              // copy constructor
-    BTree( BTree&& aOtherBTree );                   // move constructor
-    
-    virtual ~BTree();                               // destructor
-    
-    BTree& operator=( const BTree& aOtherBTree );   // copy assignment operator
-    BTree& operator=( BTree&& aOtherBTree );        // move assignment operator
-    
-# ifdef HasCopySemantics
-    virtual BTree* clone() const;                   // clone a tree
-#endif
-    
-    bool empty() const;                             // is tree empty
-    const T& operator*() const;                     // get key (node value)
-    
-    const BTree& left() const;
-    const BTree& right() const;
-    
+    // BTree leaf
+    BTree(const T& aKey) :
+		fKey(aKey),
+		fLeft(&NIL),
+		fRight(&NIL)
+	{ }
+
+    // destructor
+    virtual ~BTree()
+	{
+		if (fLeft != &NIL)
+		{
+			delete fLeft;
+		}
+
+		if (fRight != &NIL)
+		{
+			delete fRight;
+		}
+	}
+
+    // clone a tree
+    virtual BTree* clone() const
+	{
+        return new BTree(*this);
+	}
+
+    // copy constructor
+    BTree(const BTree& aOtherBTree) :
+		fKey(aOtherBTree.fKey),
+		fLeft(&NIL),
+		fRight(&NIL)
+    {
+        *this = aOtherBTree;
+    }
+
+    // copy assignment operator
+    BTree& operator=(const BTree& aOtherBTree)
+    {
+        // protect against accidental suicide
+        if (this != &aOtherBTree)
+        {
+            if (aOtherBTree.empty())
+            {
+                throw domain_error("BTree::operator=(): copying NIL");
+            }
+
+            this->~BTree();
+            fKey = aOtherBTree.fKey;
+
+            if (aOtherBTree.fLeft != &NIL)
+            {
+                fLeft = aOtherBTree.fLeft->clone();
+            }
+
+            if (aOtherBTree.fRight != &NIL)
+            {
+                fRight = aOtherBTree.fRight->clone();
+            }
+        }
+
+		return *this;
+    }
+
+    // BTree leaf
+    BTree(T&& aKey) :
+        fKey(move(aKey)),
+        fLeft(&NIL),
+        fRight(&NIL)
+    { }
+
+    // move constructor
+    BTree(BTree&& aOtherBTree) :
+        fLeft(&NIL),
+        fRight(&NIL)
+    {
+        *this = move(aOtherBTree);
+    }
+
+    // move assignment operator
+    BTree& operator=(BTree&& aOtherBTree)
+    {
+        if (this != &aOtherBTree)
+        {
+            if (aOtherBTree.empty())
+            {
+                throw domain_error("BTree::operator=(): moving NIL");
+            }
+
+            this->~BTree();
+            fKey = move(aOtherBTree.fKey);
+
+            if (aOtherBTree.fLeft != &NIL)
+            {
+                attachLeft(aOtherBTree.detach(&aOtherBTree.fLeft));
+            }
+
+            if (aOtherBTree.fRight != &NIL)
+            {
+                attachRight(aOtherBTree.detach(&aOtherBTree.fRight));
+            }
+        }
+
+        return *this;
+    }
+
+    // is tree empty
+    bool empty() const
+    {
+		return this == &NIL;
+    }
+
+    // get key (node value)
+    const T& operator*() const
+    {
+		return fKey;
+    }
+
+    const BTree& left() const
+    {
+		return *fLeft;
+    }
+
+    const BTree& right() const
+    {
+        return *fRight;
+    }
+
     // tree manipulators
-    void attachLeft( const BTree<T>& aBTree );
-    void attachRight( const BTree<T>& aBTree );
-    const BTree& detachLeft();
-    const BTree& detachRight();
+    void attachLeft(const BTree<T>& aBTree)
+    {
+		attach(&fLeft, aBTree);
+    }
+
+    void attachRight(const BTree<T>& aBTree)
+    {
+		attach(&fRight, aBTree);
+    }
+
+    const BTree& detachLeft()
+    {
+        return detach(&fLeft);
+    }
+
+    const BTree& detachRight()
+    {
+		return detach(&fRight);
+    }
 };
 
 template<class T>

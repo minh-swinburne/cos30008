@@ -6,8 +6,8 @@
 
 using namespace std;
 
-//#define P1
-//#define P2
+#define P1
+#define P2
 #define P3
 
 
@@ -53,8 +53,6 @@ void testBasicOperations()
 #endif
 
 #ifdef P2
-
-#define HasCopySemantics
 
 #include "BTree.h"
 
@@ -140,8 +138,6 @@ void testCopyControl()
 #endif
 
 #ifdef P3
-
-#define HasCopySemantics
 
 #include "BTree.h"
 
