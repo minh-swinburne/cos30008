@@ -21,6 +21,9 @@
     <ClCompile Include="FibonacciSequence.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FibonacciSequenceIterator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FibonacciSequence.h">

@@ -1,6 +1,5 @@
 // COS30008, Tutorial 6, 2024
 
-#include <iostream>
 #include <stdexcept>
 #include "FibonacciSequence.h"
 #include "FibonacciSequenceIterator.h"
@@ -42,53 +41,6 @@ void FibonacciSequence::reset()
 	fPosition = 1;
 }
 
-FibonacciSequenceIterator::FibonacciSequenceIterator(const FibonacciSequence& aSequenceObject, uint64_t aStart) :
-	fSequenceObject(aSequenceObject), fIndex(aStart)
-{ }
-
-FibonacciSequenceIterator::FibonacciSequenceIterator(uint64_t aLimit, uint64_t aStart) :
-	FibonacciSequenceIterator(FibonacciSequence(aLimit), aStart)
-{ }
-
-const uint64_t& FibonacciSequenceIterator::operator*() const
-{
-	return fSequenceObject.current();
-}
-
-FibonacciSequenceIterator& FibonacciSequenceIterator::operator++()
-{
-	fSequenceObject.advance();
-	fIndex++;
-	return *this;
-}
-
-FibonacciSequenceIterator FibonacciSequenceIterator::operator++(int)
-{
-	FibonacciSequenceIterator temp = *this;
-	++(*this);
-	return temp;
-}
-
-bool FibonacciSequenceIterator::operator==(const FibonacciSequenceIterator& aOther) const
-{
-	/*std::cout << "This: " 
-		<< fSequenceObject.current() << " (current) - " 
-		<< fSequenceObject.getLimit() << " (limit) - " 
-		<< fIndex << " (index)" 
-		<< std::endl << "Other: "
-		<< aOther.fSequenceObject.current() << " (current) - "
-		<< aOther.fSequenceObject.getLimit() << " (limit) - "
-		<< aOther.fIndex << " (index)"
-		<< std::endl << std::endl;*/
-	return (fSequenceObject.getLimit() == aOther.fSequenceObject.getLimit())
-		&& (fIndex == aOther.fIndex);
-}
-
-bool FibonacciSequenceIterator::operator!=(const FibonacciSequenceIterator& aOther) const
-{
-	return !(*this == aOther);
-}
-
 FibonacciSequenceIterator FibonacciSequence::begin() const
 {
 	return FibonacciSequenceIterator(*this);
@@ -101,16 +53,5 @@ FibonacciSequenceIterator FibonacciSequence::end() const
 	{
 		lLimit--; // iterator will never reach end
 	}
-	//std::cout << lLimit << std::endl;
 	return FibonacciSequenceIterator(*this, lLimit);
-}
-
-FibonacciSequenceIterator FibonacciSequenceIterator::begin() const
-{
-	return fSequenceObject.begin();
-}
-
-FibonacciSequenceIterator FibonacciSequenceIterator::end() const
-{
-	return fSequenceObject.end();
 }
