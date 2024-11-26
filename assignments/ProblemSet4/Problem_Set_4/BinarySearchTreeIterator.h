@@ -68,7 +68,8 @@ public:
 	// comparison operators
     bool operator==(const Iterator& aOtherIter) const
     {
-		return fStack == aOtherIter.fStack;
+		return (&fBSTree == &aOtherIter.fBSTree)
+            && (fStack == aOtherIter.fStack);
     }
 
     bool operator!=(const Iterator& aOtherIter) const

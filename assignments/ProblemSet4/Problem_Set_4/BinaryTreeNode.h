@@ -173,7 +173,7 @@ struct BinaryTreeNode
     bool insert(const T& aKey)
     {
 		// If trying to insert a key into NIL
-        // or that key already exists, return false
+        // or duplicate key, return false
 		if (empty() || aKey == key)
 		{
 			return false;

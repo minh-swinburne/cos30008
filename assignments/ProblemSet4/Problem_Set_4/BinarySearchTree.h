@@ -67,7 +67,12 @@ public:
 
     bool remove(const T& aKey)
     {
-		// If removing root and root is the only node in the tree
+		if (empty())
+		{
+			throw std::domain_error("Cannot remove from an empty tree.");
+		}
+
+		// If fRoot is the only node in the tree,
         // delete it and set the root to NIL
         if (aKey == fRoot->key && fRoot->leaf())
         {

@@ -6,8 +6,8 @@
 using namespace std;
 
 
-//#define P1
-//#define P2
+#define P1
+#define P2
 #define P3
 
 #ifdef P1
